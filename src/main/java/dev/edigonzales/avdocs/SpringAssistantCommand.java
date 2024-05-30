@@ -52,7 +52,7 @@ public class SpringAssistantCommand {
     private List<String> findSimilarDocuments(String message) {
         //System.err.println("Starting similarity search");
         Log.info("Starting similarity search");
-        List<Document> similarDocuments = vectorStore.similaritySearch(SearchRequest.query(message).withTopK(4));
+        List<Document> similarDocuments = vectorStore.similaritySearch(SearchRequest.query(message).withTopK(6));
         
         for (Document document : similarDocuments) {
             System.err.println("Quelle: " + document.getMetadata());
