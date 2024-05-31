@@ -57,6 +57,11 @@ public class ReferenceDocsLoader {
                 .collect(Collectors.toList());
             
             for(String file : files) {
+                log.info("file: " + file);
+                if (!file.endsWith("pdf")) {
+                    continue;
+                }
+                
                 var config = PdfDocumentReaderConfig.builder()
                         .withPageExtractedTextFormatter(
                                 new ExtractedTextFormatter.Builder().withNumberOfBottomTextLinesToDelete(0)
