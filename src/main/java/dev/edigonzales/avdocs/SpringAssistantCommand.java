@@ -37,29 +37,20 @@ public class SpringAssistantCommand {
         Map<String, Object> promptParameters = new HashMap<>();
         promptParameters.put("input", message);
         promptParameters.put("documents", String.join("\n", findSimilarDocuments(message)));
-
-        //System.err.println("Calling chat client");
-        Log.info("Calling chat client");
         
         Generation generation = chatClient.call(promptTemplate.create(promptParameters)).getResult();
         ChatGenerationMetadata metadata = generation.getMetadata();
-        
-        //Log.info(metadata.getContentFilterMetadata());
-        
+                
         return generation.getOutput().getContent();
     }
 
     private List<String> findSimilarDocuments(String message) {
-        //System.err.println("Starting similarity search");
         Log.info("Starting similarity search");
         List<Document> similarDocuments = vectorStore.similaritySearch(SearchRequest.query(message).withTopK(3));
-        
         for (Document document : similarDocuments) {
             System.err.println("Quelle: " + document.getMetadata());
         }
-        //System.err.println("Similar documents found: " + similarDocuments.size());
         Log.info("Similar documents found: " + similarDocuments.size());
         return similarDocuments.stream().map(Document::getContent).toList();
     }
-
 }
